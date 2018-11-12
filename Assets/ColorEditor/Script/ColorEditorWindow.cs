@@ -6,6 +6,8 @@ using UnityEditor;
 
 public class ColorEditorWindow : EditorWindow
 {
+    public Color defaultBackgroundColor { get; set; }
+
     /// <summary>
     /// エディタの作成
     /// </summary>
@@ -19,10 +21,21 @@ public class ColorEditorWindow : EditorWindow
     private void OnEnable()
     {
         // TODO : エディタの初期化
+        defaultBackgroundColor = GUI.backgroundColor;
     }
 
     private void OnGUI()
     {
         // TODO : エディタのＵＩ
+        using (new GUILayout.VerticalScope(EditorStyles.helpBox))
+        {
+            GUI.backgroundColor = Color.gray;
+            using (new GUILayout.HorizontalScope(EditorStyles.toolbar))
+            {
+                GUILayout.Label("色の作成");
+            }
+            GUI.backgroundColor = defaultBackgroundColor;
+
+        }
     }
 }
