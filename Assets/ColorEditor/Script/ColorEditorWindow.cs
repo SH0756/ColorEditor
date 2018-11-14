@@ -49,25 +49,40 @@ public class ColorEditorWindow : EditorWindow
                     GUILayout.Label("Name");
                     GUILayout.Label("Color");
                 }
-                for (int i = 0; i < colorDataCount; i++)
+
+                using (new GUILayout.VerticalScope(EditorStyles.helpBox))
                 {
-                    using (new GUILayout.HorizontalScope(EditorStyles.helpBox))
+                    if (colorDataCount > 0)
                     {
-                        colorDataArray[i].name = EditorGUILayout.TextField(colorDataArray[i].name);
-                        colorDataArray[i].color = EditorGUILayout.ColorField(colorDataArray[i].color);
-                        if(GUILayout.Button("Clear"))
+                        // カラーデータを表示
+                        for (int i = 0; i < colorDataCount; i++)
                         {
-                            // HACK : 初期化または削除、それか両方
-                            // HACK : カラーの初期化時にアルファも初期化
-                            colorDataArray[i].name = string.Empty;
-                            colorDataArray[i].color = Color.black;
+                            using (new GUILayout.HorizontalScope())
+                            {
+                                colorDataArray[i].name = EditorGUILayout.TextField(colorDataArray[i].name);
+                                colorDataArray[i].color = EditorGUILayout.ColorField(colorDataArray[i].color);
+                                if (GUILayout.Button("Clear"))
+                                {
+                                    colorDataArray[i].name = string.Empty;
+                                    colorDataArray[i].color = Color.black;
+                                }
+                                if (GUILayout.Button("Erase"))
+                                {
+                                    // TODO : 要素の削除
+                                }
+                            }
                         }
                     }
+                    else
+                        GUILayout.Label("No Data");
                 }
+
             }
 
+            // カラーデータの追加ボタン
             if(GUILayout.Button("Add"))
             {
+                // データ配列のキャパシティを超える場合は新しくキャパシティ上限を増やした配列にコピー
                 if(colorDataCount >= colorDataCapacityCount)
                 {
                     colorDataCapacityCount += 5;
@@ -81,6 +96,8 @@ public class ColorEditorWindow : EditorWindow
 
                 // TODO : 追加したくないときの処理
 
+                colorDataArray[colorDataCount].name = "New Color";
+                colorDataArray[colorDataCount].color = Color.black;
                 colorDataCount++;
             }
         }
